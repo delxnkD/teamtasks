@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card">
+  <h2>Create List</h2>
+  <form method="post">
+    <div class="mb-2">
+      <label>Title</label>
+      <input class="form-control" name="title" required>
+    </div>
+    <div class="mb-2">
+      <label>Description</label>
+      <textarea class="form-control" name="description"></textarea>
+    </div>
+    <button class="btn btn-primary">Create</button>
+  </form>
+</div>
+{% endblock %}

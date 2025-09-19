@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card">
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <h2 style="margin:0">Your Lists</h2>
+    <a class="btn btn-primary" href="{{ url_for('main.lists_new') }}">Create New List</a>
+  </div>
+</div>
+
+<div class="list-collection">
+  {% for l in lists['owned'] %}
+    <div class="list-card card">
+      <h3><a href="{{ url_for('main.view_list', list_id=l.id) }}">{{ l.title }}</a></h3>
+      <p>{{ l.description }}</p>
+      <div class="small">Owner: you</div>
+    </div>
+  {% else %}
+    <div class="list-card card center">
+      <p class="small">No lists yet — create one to get started.</p>
+    </div>
+  {% endfor %}
+
+  {% for l in lists['shared'] %}
+    <div class="list-card card">
+      <h3><a href="{{ url_for('main.view_list', list_id=l.id) }}">{{ l.title }}</a></h3>
+      <p>{{ l.description }}</p>
+      <div class="small">Owner: {{ l.owner.username }}</div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card">
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <div>
+      <h2 class="page-title">{{ list_obj.title }}</h2>
+      <div class="small">Owner: {{ list_obj.owner.username }}</div>
+    </div>
+    <div>
+      {% if list_obj.owner_id == current_user.id %}
+        <span class="share-badge">You own this list</span>
+      {% else %}
+        <span class="small">Shared list</span>
+      {% endif %}
+    </div>
+  </div>
+
+  <p class="small" style="margin-top:12px;">{{ list_obj.description }}</p>
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0;">Tasks</h4>
+  <div id="tasksContainer">
+    <ul class="list-group">
+      {% for t in list_obj.tasks %}
+        <li class="task-item {% if t.done %}done{% endif %}" data-task-id="{{ t.id }}">
+          <div class="meta">
+            <div class="title">{{ t.title }}</div>
+            <div class="desc">{{ t.description }}</div>
+          </div>
+
+          <div class="action-group">
+            <button class="icon-btn js-toggle" data-task-id="{{ t.id }}" data-done="{{ 'true' if t.done else 'false' }}" title="Toggle done">
+              {% if t.done %}
+                ✓
+              {% else %}
+                ○
+              {% endif %}
+            </button>
+
+            {% if can_edit %}
+              <button class="icon-btn js-delete" data-task-id="{{ t.id }}" title="Delete task">🗑</button>
+            {% endif %}
+          </div>
+        </li>
+      {% else %}
+        <li class="task-item small">No tasks yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <form id="addTaskForm" class="inline-form" data-list-id="{{ list_obj.id }}">
+    <input id="title" class="form-control" placeholder="Task title" required>
+    <input id="desc" class="form-control" placeholder="Short description (optional)">
+    <button id="addBtn" class="btn btn-primary" type="submit">Add</button>
+  </form>
+</div>
+
+{% if list_obj.owner_id == current_user.id %}
+<div class="card">
+  <h4>Share this list</h4>
+  <form method="post" action="{{ url_for('main.share_list_view', list_id=list_obj.id) }}">
+    <div class="mb-2">
+      <label>Username</label>
+      <input class="form-control" name="username" required>
+    </div>
+    <div class="form-check mb-2">
+      <input class="form-check-input" type="checkbox" name="can_edit" id="canEdit">
+      <label class="form-check-label" for="canEdit">Can edit</label>
+    </div>
+    <button class="btn btn-secondary">Share</button>
+  </form>
+</div>
+{% endif %}
+{% endblock %}
