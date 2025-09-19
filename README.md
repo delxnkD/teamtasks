@@ -30,7 +30,7 @@ Follow these steps to get the development server running.
 
 1.  **Clone the Repository**
     ```bash
-    git clone [https://github.com/](https://github.com/)<your-org>/teamtasks.git
+    git clone (https://github.com/delxnkD/teamtasks.git)
     cd teamtasks
     ```
 
